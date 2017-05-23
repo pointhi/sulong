@@ -104,6 +104,13 @@ public final class LLVMParserRuntime {
         model.accept(module);
 
         LLVMFunctionDescriptor mainFunction = visitor.getFunction("@main");
+        if (mainFunction == null) {
+            /*
+             * TODO: probably we use a bitcode file compiled by flang which uses a different name
+             * for the main function.
+             */
+            mainFunction = visitor.getFunction("@MAIN_");
+        }
 
         LLVMExpressionNode[] globals = visitor.getGobalVariables().toArray(new LLVMExpressionNode[0]);
         RootNode globalVarInits = nodeFactory.createStaticInitsRootNode(visitor, globals);

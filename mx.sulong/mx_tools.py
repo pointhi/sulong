@@ -116,7 +116,7 @@ class ClangV38Compiler(Tool):
             self.name = name
 
         if supportedLanguages is None:
-            self.supportedLanguages = [ProgrammingLanguage.C, ProgrammingLanguage.C_PLUS_PLUS, ProgrammingLanguage.OBJECTIVE_C]
+            self.supportedLanguages = [ProgrammingLanguage.C, ProgrammingLanguage.C_PLUS_PLUS, ProgrammingLanguage.FORTRAN, ProgrammingLanguage.OBJECTIVE_C]
         else:
             self.supportedLanguages = supportedLanguages
 
@@ -126,6 +126,8 @@ class ClangV38Compiler(Tool):
             return 'clang'
         elif inputLanguage == ProgrammingLanguage.C_PLUS_PLUS:
             return 'clang++'
+        elif inputLanguage == ProgrammingLanguage.FORTRAN:
+            return 'flang'
         else:
             raise Exception('Unsupported input language')
 
@@ -216,6 +218,7 @@ Tool.C_OPT = Opt('C_OPT', ['-mem2reg', '-always-inline', '-jump-threading', '-si
 Tool.CLANG_V38 = ClangV38Compiler('clang_v38')
 Tool.CLANG_C_V38 = ClangV38Compiler('clangc_v38', [ProgrammingLanguage.C])
 Tool.CLANG_CPP_V38 = ClangV38Compiler('clangcpp_v38', [ProgrammingLanguage.C_PLUS_PLUS])
+Tool.FLANG_V38 = ClangV38Compiler('flang', [ProgrammingLanguage.FORTRAN])
 
 Tool.BB_VECTORIZE_V38 = OptV38('BB_VECTORIZE', ['-functionattrs', '-instcombine', '-always-inline', '-jump-threading', '-simplifycfg', '-mem2reg', '-bb-vectorize'])
 Tool.MEM2REG_V38 = OptV38('MEM2REG', ['-mem2reg'])

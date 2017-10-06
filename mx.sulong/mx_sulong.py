@@ -536,7 +536,7 @@ def findLLVMProgram(llvmProgram, version=None):
     installedProgram = findInstalledLLVMProgram(llvmProgram, version)
 
     if installedProgram is None:
-        exit('found no supported version of ' + llvmProgram)
+        exit('found no supported version of ' + llvmProgram + '. Supported Versions are: ' + str(version))
     else:
         return installedProgram
 

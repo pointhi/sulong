@@ -39,11 +39,11 @@ public final class MDBasicType extends MDType implements MDBaseNode {
 
     private final DwarfEncoding encoding;
 
-    private final long tag;
+    private final Tag tag;
 
     private MDBasicType(long tag, long line, long size, long align, long offset, long flags, long encoding) {
         super(size, align, offset, line, flags);
-        this.tag = tag;
+        this.tag = Tag.decode(tag);
         this.encoding = DwarfEncoding.decode(encoding);
     }
 
@@ -56,8 +56,33 @@ public final class MDBasicType extends MDType implements MDBaseNode {
         return encoding;
     }
 
-    public long getTag() {
+    public Tag getTag() {
         return tag;
+    }
+
+    public enum Tag {
+        UNKNOWN(-1),
+        DW_TAG_MEMBER(13),
+        DW_TAG_POINTER_TYPE(15),
+        DW_TAG_REFERENCE_TYPE(16),
+        DW_TAG_TYPEDEF(22),
+        DW_TAG_INHERITANCE(28),
+        DW_TAG_PTR_TO_MEMBER_TYPE(31),
+        DW_TAG_CONST_TYPE(38),
+        DW_TAG_FRIEND(42),
+        DW_TAG_VOLATILE_TYPE(53),
+        DW_TAG_RESTRICT_TYPE(55),
+        DW_TAG_ATOMIC_TYPE(71);
+
+        private final int id;
+
+        Tag(int id) {
+            this.id = id;
+        }
+
+        private static Tag decode(long val) {
+            return Arrays.stream(values()).filter(e -> e.id == val).findAny().orElse(UNKNOWN);
+        }
     }
 
     public enum DwarfEncoding {

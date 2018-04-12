@@ -31,6 +31,7 @@ package com.oracle.truffle.llvm.runtime.vector;
 
 import java.util.Arrays;
 import java.util.function.BiFunction;
+import java.util.function.Function;
 
 import com.oracle.truffle.api.CompilerDirectives.ValueType;
 
@@ -75,6 +76,15 @@ public final class LLVMFloatVector {
             result[i] = function.apply(a.vector[i], b.vector[i]);
         }
         return LLVMI1Vector.create(result);
+    }
+
+    public LLVMFloatVector apply(Function<Float, Float> function) {
+        float[] result = new float[vector.length];
+
+        for (int i = 0; i < vector.length; i++) {
+            result[i] = function.apply(vector[i]);
+        }
+        return create(result);
     }
 
     public LLVMFloatVector add(LLVMFloatVector rightValue) {

@@ -41,6 +41,7 @@ import com.oracle.truffle.llvm.runtime.floating.LLVM80BitFloat;
 import com.oracle.truffle.llvm.runtime.memory.LLVMMemory;
 import com.oracle.truffle.llvm.runtime.nodes.api.LLVMExpressionNode;
 import com.oracle.truffle.llvm.runtime.vector.LLVMDoubleVector;
+import com.oracle.truffle.llvm.runtime.vector.LLVMFloatVector;
 
 /**
  * Implements the C functions from math.h.
@@ -145,6 +146,16 @@ public abstract class LLVMCMathsIntrinsics {
         protected double doIntrinsic(double value) {
             return Math.floor(value);
         }
+
+        @Specialization
+        protected LLVMFloatVector doVector(LLVMFloatVector value) {
+            return value.apply(f -> (float) Math.floor(f));
+        }
+
+        @Specialization
+        protected LLVMDoubleVector doVector(LLVMDoubleVector value) {
+            return value.apply(f -> Math.floor(f));
+        }
     }
 
     @NodeChild(type = LLVMExpressionNode.class)
@@ -172,6 +183,11 @@ public abstract class LLVMCMathsIntrinsics {
         @Specialization
         protected LLVM80BitFloat do80Float(LLVM80BitFloat value) {
             return value.abs();
+        }
+
+        @Specialization
+        protected LLVMFloatVector doVector(LLVMFloatVector value) {
+            return value.apply(f -> Math.abs(f));
         }
 
         @Specialization

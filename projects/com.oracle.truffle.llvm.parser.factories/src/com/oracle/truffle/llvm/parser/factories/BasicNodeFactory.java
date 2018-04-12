@@ -1648,6 +1648,7 @@ public class BasicNodeFactory implements NodeFactory {
             case "@llvm.fabs.f32":
             case "@llvm.fabs.f64":
             case "@llvm.fabs.f80":
+            case "@llvm.fabs.v4f32":
             case "@llvm.fabs.v2f64":
                 return LLVMFAbsNodeGen.create(args[1], sourceSection);
             case "@llvm.returnaddress":
@@ -1763,6 +1764,8 @@ public class BasicNodeFactory implements NodeFactory {
                 return LLVMCMathsIntrinsicsFactory.LLVMLog10NodeGen.create(args[1], sourceSection);
             case "@llvm.floor.f32":
             case "@llvm.floor.f64":
+            case "@llvm.floor.v4f32":
+            case "@llvm.floor.v2f64":
                 return LLVMCMathsIntrinsicsFactory.LLVMFloorNodeGen.create(args[1], sourceSection);
             case "@llvm.ceil.f32":
             case "@llvm.ceil.f64":

@@ -41,6 +41,7 @@ public final class SulongRuntimeException extends RuntimeException {
     public SulongRuntimeException(Throwable interpreterException, SulongStackTrace cStackTrace) {
         super(interpreterException);
         this.cStackTrace = cStackTrace;
+        interpreterException.printStackTrace();  // TODO: print in BasicBlockNode
     }
 
     public SulongStackTrace getCStackTrace() {

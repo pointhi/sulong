@@ -1095,6 +1095,30 @@ public class BasicNodeFactory implements NodeFactory {
             }
         } else if (type instanceof PointerType || type instanceof StructureType || type instanceof ArrayType) {
             return LLVMAddressDirectLoadNodeGen.create(targetAddress);
+        } else if(type instanceof VectorType) {
+            VectorType vectorType = (VectorType)type;
+            if (vectorType.getElementType() instanceof PrimitiveType) {
+                switch(((PrimitiveType) vectorType.getElementType()).getPrimitiveKind()) {
+                    case I1: // TODO: verify correctness
+                        return LLVMLoadI1VectorNodeGen.create(targetAddress, vectorType.getNumberOfElements());
+                    case I8:
+                        return LLVMLoadI1VectorNodeGen.create(targetAddress, vectorType.getNumberOfElements());
+                    case I16:
+                        return LLVMLoadI1VectorNodeGen.create(targetAddress, vectorType.getNumberOfElements());
+                    case I32:
+                        return LLVMLoadI1VectorNodeGen.create(targetAddress, vectorType.getNumberOfElements());
+                    case I64:
+                        return LLVMLoadI1VectorNodeGen.create(targetAddress, vectorType.getNumberOfElements());
+                    case FLOAT:
+                        return LLVMLoadFloatVectorNodeGen.create(targetAddress, vectorType.getNumberOfElements());
+                    case DOUBLE:
+                        return LLVMLoadDoubleVectorNodeGen.create(targetAddress, vectorType.getNumberOfElements());
+                    default:
+                        throw new AssertionError(type);
+                }
+            } else {
+                throw new AssertionError(type);
+            }
         } else {
             throw new AssertionError(type);
         }
@@ -1372,6 +1396,13 @@ public class BasicNodeFactory implements NodeFactory {
             }
         } else if (llvmType instanceof PointerType) {
             store = LLVMAddressStoreNodeGen.create(null, null);
+        } else if(llvmType instanceof VectorType) {
+            VectorType vectorType = (VectorType)llvmType;
+            if (vectorType.getElementType() instanceof PrimitiveType) {
+                store = LLVMStoreVectorNodeGen.create(vectorType.getNumberOfElements(), null, null);
+            } else {
+                throw new AssertionError(llvmType);
+            }
         } else {
             throw new AssertionError(llvmType);
         }
